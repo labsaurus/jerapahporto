@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerapah/Deinoskin - Game Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6a0dad; /* Deep Purple */
+            --secondary-color: #ff69b4; /* Hot Pink */
+            --accent-color: #ffd700; /* Gold */
+            --text-color: #333;
+            --background-light: #f0f8ff; /* Alice Blue */
+            --background-dark: #e6e6fa; /* Lavender */
+            --card-background: #ffffff;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--background-light), var(--background-dark));
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            border-bottom-left-radius: 50% 20px;
+            border-bottom-right-radius: 50% 20px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(5deg);
+            z-index: 0;
+        }
+
+        header h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            text-shadow: 4px 4px var(--secondary-color);
+            position: relative;
+            z-index: 1;
+        }
+
+        header p {
+            font-size: 1.3em;
+            margin-top: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info .detail {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-info .detail i {
+            font-size: 1.2em;
+        }
+
+        section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        section h2 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 5px;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+        }
+
+        #portfolio .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .game-card {
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            position: relative;
+            border: 3px solid var(--secondary-color);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .game-card .image-gallery {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+            background-color: #eee;
+        }
+
+        .game-card .image-gallery.portrait {
+            padding-top: 177.77%; /* 9:16 Aspect Ratio */
+        }
+
+        .game-card .image-gallery img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .game-card .image-gallery img.active {
+            opacity: 1;
+        }
+
+        .game-card .gallery-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+
+        .game-card .gallery-nav button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.5em;
+            border-radius: 50%;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .game-card .gallery-nav button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .game-card .card-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .game-card h3 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.6em;
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .game-card p {
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .game-card .details {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .game-card .detail-tag {
+            background-color: var(--background-dark);
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid var(--primary-color);
+        }
+
+        .game-card .demo-link {
+            display: block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            align-self: center;
+            width: fit-content;
+        }
+
+        .game-card .demo-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .game-card .demo-link:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top-left-radius: 50% 20px;
+            border-top-right-radius: 50% 20px;
+            box-shadow: 0 -8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            section h2 {
+                font-size: 2em;
+            }
+
+            #portfolio .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-card .card-content {
+                padding: 20px;
+            }
+
+            .game-card h3 {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 0.9em;
+            }
+
+            .profile-info .detail {
+                font-size: 0.9em;
+                padding: 6px 15px;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            section h2 {
+                font-size: 1.8em;
+            }
+
+            .game-card .demo-link {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Jerapah / Deinoskin</h1>
+            <p>Game Developer Portfolio</p>
+            <div class="profile-info">
+<span class="detail">Skill: Construct 3</span>
+<span class="detail">Experience: ~5 years</span>
+            </div>
+        </div>
+    </header>
+
+    <section id="portfolio" class="container">
+        <h2>My Games</h2>
+        <div class="portfolio-grid" id="portfolio-grid">
+            </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Jerapah/Deinoskin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const portfolioData = [
+            {
+                "NAMA GAME": "Latto-Latto",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLmxhdHRvbGF0dG8uZ2FtZV9zY3JlZW5fMV8xNjczOTgxMjQ4XzAzNA/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLmxhdHRvbGF0dG8uZ2FtZV9zY3JlZW5fMF8xNjczOTgxMjQ3XzAyMw/screen-0.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLmxhdHRvbGF0dG8uZ2FtZV9zY3JlZW5fMl8xNjczOTgxMjQ4XzA3MQ/screen-2.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Portrait",
+                "Genre": "Casual",
+                "Demo Link": "https://www.youtube.com/watch?v=xvyQMaCW3CQ"
+            },
+            {
+                "NAMA GAME": "Tape X Race",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLnRpcGV4LnRyb25kb2wubW9kaWYuZ2FtZV9zY3JlZW5fNF8xNjc3NTY3MDk2XzAyNA/screen-4.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLnRpcGV4LnRyb25kb2wubW9kaWYuZ2FtZV9zY3JlZW5fN18xNjc3NTY3MDk5XzAyNg/screen-7.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLnRpcGV4LnRyb25kb2wubW9kaWYuZ2FtZV9zY3JlZW5fNl8xNjc3NTY3MDk5XzA4Ng/screen-6.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Landscape",
+                "Genre": "Racing",
+                "Demo Link": ""
+            },
+            {
+                "NAMA GAME": "Tiny Craft - 2D Survival",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://play-lh.googleusercontent.com/DtJmD_ABxGTKhdn-Pu_6LFruv1sI-ff_U1nuwLw4eLLHgEJskZg2BVH1FxosN5OGbg=w2560-h1440-rw",
+                "SCREENSHOT 2": "https://play-lh.googleusercontent.com/o8mDiQHizeCIwiomQlA192xr9iKEPBedbbOzCa4nuj3Z_ThfctBnm7Dxz3fwRrKtmFE=w2560-h1440-rw",
+                "SCREENSHOT 3": "https://play-lh.googleusercontent.com/mTBgQZ5Lpm1xt2B4liDK9WkT7_dsb5fJitj7NVjsRaLyqgQPpwZ7nt7xE6W6ictsvnM=w2560-h1440-rw",
+                "ORIENTATION": "Landscape",
+                "Genre": "Platformer Adventure",
+                "Demo Link": "https://play.google.com/store/apps/details?id=com.tinycraft.blockkk"
+            },
+            {
+                "NAMA GAME": "Live Tiktok (Mud Bath) Simulation",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLm1hbmRpLmx1bXB1ci5zaW11bGF0b3IudG9rdG9rLnBpeWV0b19zY3JlZW5fMF8xNjc0ODAyMzg4XzA5Mw/screen-0.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLm1hbmRpLmx1bXB1ci5zaW11bGF0b3IudG9rdG9rLnBpeWV0b19zY3JlZW5fMl8xNjc0ODAyMzkwXzA4Mg/screen-2.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLm1hbmRpLmx1bXB1ci5zaW11bGF0b3IudG9rdG9rLnBpeWV0b19zY3JlZW5fM18xNjc0ODAyMzkwXzA0Mw/screen-3.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Portrait",
+                "Genre": "Simulation",
+                "Demo Link": "https://www.youtube.com/watch?v=CtbVn5a-2JY&t=1s"
+            },
+            {
+                "NAMA GAME": "Rainbow Anime Craft",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLmFuaW1lY3JhZnQucmFpbmJvd19zY3JlZW5fMF8xNjY0MDg2MjYwXzAxNA/screen-0.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLmFuaW1lY3JhZnQucmFpbmJvd19zY3JlZW5fMV8xNjY0MDg2MjYxXzA0Mg/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLmFuaW1lY3JhZnQucmFpbmJvd19zY3JlZW5fM18xNjY0MDg2MjY0XzA3OQ/screen-3.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Landscape",
+                "Genre": "Platformer Adventure",
+                "Demo Link": "https://www.youtube.com/watch?v=jeL5m8xRYU4&t=1s"
+            },
+            {
+                "NAMA GAME": "Spranki Real Life",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLnNwcmFuc2tpLnJlYWxsaWZlc19zY3JlZW5fMV8xNzMzNzk4NTA2XzAwNg/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLnNwcmFuc2tpLnJlYWxsaWZlc19zY3JlZW5fMl8xNzMzNzk4NTA3XzA5MA/screen-2.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLnNwcmFuc2tpLnJlYWxsaWZlc19zY3JlZW5fM18xNzMzNzk4NTA5XzAyOA/screen-3.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Landscape",
+                "Genre": "Music Game",
+                "Demo Link": ""
+            },
+            {
+                "NAMA GAME": "Attack the Titan",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://s3.envato.com/files/537523947/Screenshot%20at%20Oct%2027%2012-57-05.png",
+                "SCREENSHOT 2": "https://s3.envato.com/files/537523947/Screenshot%20at%20Oct%2027%2012-59-22.png",
+                "SCREENSHOT 3": "https://s3.envato.com/files/537523947/Screenshot%20at%20Oct%2027%2013-02-18.png",
+                "ORIENTATION": "Landscape",
+                "Genre": "Action Adventure",
+                "Demo Link": "https://preview.codecanyon.net/item/attack-the-titan-html5-game-construct-3/full_screen_preview/55077858"
+            },
+            {
+                "NAMA GAME": "Lie Detector",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://s3.envato.com/files/539847013/slice8.png",
+                "SCREENSHOT 2": "https://s3.envato.com/files/539847013/slice9.png",
+                "SCREENSHOT 3": "https://s3.envato.com/files/539847013/slice8.png",
+                "ORIENTATION": "Portrait",
+                "Genre": "Simulation",
+                "Demo Link": ""
+            },
+            {
+                "NAMA GAME": "Obit (the Dog)",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLm9iaXRzaWFuamluZy5nYW1lX3NjcmVlbl80XzE2ODk5MTMwMDJfMDQ2/screen-4.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLmobitsianjing.game_screen_1_1689912998_052/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLm9iaXRzaWFuamluZy5nYW1lX3NjcmVlbl8yXzE2ODk5MTI5OTlfMDU1/screen-2.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Landscape",
+                "Genre": "Action Adventure",
+                "Demo Link": ""
+            },
+            {
+                "NAMA GAME": "Ant Simulator - Cat Toys",
+                "GAME ENGINE": "Contruct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLmFudC5zaW11bGF0b3Iuc2VtdXRfc2NyZWVuXzBfMTcxMDM4NjY1OF8wMTc/screen-0.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLmFudC5zaW11bGF0b3Iuc2VtdXRfc2NyZWVuXzFfMTcxMDM4NjY1OV8wNTI/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLmFudC5zaW11bGF0b3Iuc2VtdXRfc2NyZWVuXzJfMTcxMDM4NjY2M18wMzU/screen-2.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Portrait",
+                "Genre": "Simulation",
+                "Demo Link": ""
+            },
+            {
+                "NAMA GAME": "Brainrot Game Battle Tung tung sahur",
+                "GAME ENGINE": "Construct 3",
+                "SCREENSHOT 1": "https://image.winudf.com/v2/image1/Y29tLmFub21hbGkudHVuZ3R1bmdiYXR0bGVfc2NyZWVuXzBfMTc0NTUwNjU3M18wMjc/screen-0.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 2": "https://image.winudf.com/v2/image1/Y29tLmFub21hbGkudHVuZ3R1bmdiYXR0bGVfc2NyZWVuXzFfMTc0NTUwNjU3M18wMzI/screen-1.webp?fakeurl=1&type=.webp",
+                "SCREENSHOT 3": "https://image.winudf.com/v2/image1/Y29tLmFub21hbGkudHVuZ3R1bmdiYXR0bGVfc2NyZWVuXzNfMTc0NTUwNjU3NV8wMDg/screen-3.webp?fakeurl=1&type=.webp",
+                "ORIENTATION": "Landscape",
+                "Genre": "Casual",
+                "Demo Link": "https://deinoskin.itch.io/brainrot-game-battle-tung-tung-sahur"
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const portfolioGrid = document.getElementById('portfolio-grid');
+
+            portfolioData.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.classList.add('game-card');
+
+                const screenshots = [
+                    game["SCREENSHOT 1"],
+                    game["SCREENSHOT 2"],
+                    game["SCREENSHOT 3"]
+                ].filter(url => url && url.trim() !== ''); // Filter out empty or null URLs
+
+                let screenshotHtml = '<div class="image-gallery ' + game["ORIENTATION"].toLowerCase() + '">';
+                if (screenshots.length > 0) {
+                    screenshots.forEach((src, index) => {
+                        screenshotHtml += `<img src="${src}" alt="${game["NAMA GAME"]} Screenshot ${index + 1}" class="${index === 0 ? 'active' : ''}">`;
+                    });
+                    if (screenshots.length > 1) {
+                        screenshotHtml += `
+                            <div class="gallery-nav">
+                                <button class="prev-img">&lt;</button>
+                                <button class="next-img">&gt;</button>
+                            </div>
+                        `;
+                    }
+                } else {
+                    screenshotHtml += `<img src="https://via.placeholder.com/600x400?text=No+Image+Available" alt="No Image Available" class="active">`;
+                }
+                screenshotHtml += '</div>';
+
+                const demoLink = game["Demo Link"];
+                const demoLinkHtml = demoLink ?
+                    `<a href="${demoLink}" target="_blank" rel="noopener noreferrer" class="demo-link">Play Demo</a>` :
+                    `<button class="demo-link" disabled>No Demo Available</button>`;
+
+                gameCard.innerHTML = `
+                    ${screenshotHtml}
+                    <div class="card-content">
+                        <h3>${game["NAMA GAME"]}</h3>
+                        <div class="details">
+                            <span class="detail-tag">Engine: ${game["GAME ENGINE"]}</span>
+                            <span class="detail-tag">Genre: ${game["Genre"]}</span>
+                            <span class="detail-tag">Orientation: ${game["ORIENTATION"]}</span>
+                        </div>
+                        ${demoLinkHtml}
+                    </div>
+                `;
+                portfolioGrid.appendChild(gameCard);
+            });
+
+            // Image gallery functionality
+            document.querySelectorAll('.game-card').forEach(card => {
+                const images = card.querySelectorAll('.image-gallery img');
+                const prevButton = card.querySelector('.prev-img');
+                const nextButton = card.querySelector('.next-img');
+                let currentIndex = 0;
+
+                const showImage = (index) => {
+                    images.forEach((img, i) => {
+                        img.classList.remove('active');
+                        if (i === index) {
+                            img.classList.add('active');
+                        }
+                    });
+                };
+
+                if (prevButton && nextButton) {
+                    prevButton.addEventListener('click', () => {
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        showImage(currentIndex);
+                    });
+
+                    nextButton.addEventListener('click', () => {
+                        currentIndex = (currentIndex + 1) % images.length;
+                        showImage(currentIndex);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
